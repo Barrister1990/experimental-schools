@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, FileText, Download, Calendar, Filter, Printer } from 'lucide-react';
-import { Student } from '@/types';
 import { useAlert } from '@/components/shared/AlertProvider';
-import { getCurrentAcademicYear, getAcademicYearOptions } from '@/lib/utils/academic-years';
-
+import TikTokLoader from '@/components/TikTokLoader';
+import { getAcademicYearOptions, getCurrentAcademicYear } from '@/lib/utils/academic-years';
+import { Student } from '@/types';
+import { ArrowLeft, Calendar, Download, FileText, Filter, Printer } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 interface ReportOption {
   id: string;
   name: string;
