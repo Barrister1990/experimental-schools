@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useAlert } from '@/components/shared/AlertProvider';
 import { useOfflineClasses, useOfflineStudents, useOfflineSubjects } from '@/hooks/useOfflineData';
 import { offlineTeacherService } from '@/lib/services/offline-teacher-service';
@@ -316,9 +317,7 @@ export default function EnterGradesPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
+        <TikTokLoader text="Fetching grade entry data..." />
       </div>
     );
   }
@@ -504,7 +503,7 @@ export default function EnterGradesPage() {
         <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-4 md:p-6">
           {loadingGrade ? (
             <div className="flex items-center justify-center h-full min-h-[400px]">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <TikTokLoader text="Loading existing grades..." />
             </div>
           ) : selectedStudent ? (
             <>

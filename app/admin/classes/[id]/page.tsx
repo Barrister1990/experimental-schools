@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { getLevelName, isHighestLevel } from '@/lib/utils/class-levels';
 import { Class, Student, User } from '@/types';
 import { ArrowLeft, Edit, GraduationCap, Plus, Trophy, UserCheck } from 'lucide-react';
@@ -81,7 +82,7 @@ export default function ClassDetailsPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="p-8 text-center text-gray-500">Loading class details...</div>
+        <TikTokLoader text="Fetching class details..." />
       </div>
     );
   }

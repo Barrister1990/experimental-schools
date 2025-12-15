@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, GraduationCap, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
@@ -118,7 +119,7 @@ export default function PromotionsPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="p-8 text-center text-gray-500">Loading promotion status...</div>
+        <TikTokLoader text="Fetching promotion status..." />
       </div>
     );
   }

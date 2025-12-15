@@ -1,6 +1,7 @@
 'use client';
 
 import { useAlert } from '@/components/shared/AlertProvider';
+import TikTokLoader from '@/components/TikTokLoader';
 import { User } from '@/types';
 import { AlertCircle, CheckCircle, ClipboardList, Edit, MoreVertical, Plus, Search, Trash2, UserCheck, User as UserIcon, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -190,7 +191,7 @@ export default function TeachersPage() {
       {/* Teachers List */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Loading teachers...</div>
+          <TikTokLoader text="Fetching teachers..." />
         ) : filteredTeachers.length === 0 ? (
           <div className="p-8 text-center">
             <p className="text-gray-500 mb-4">No teachers found</p>

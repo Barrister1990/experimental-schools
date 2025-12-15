@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Edit, Mail, Phone, Calendar, User, School, ClipboardList, UserCheck, Shield } from 'lucide-react';
@@ -81,7 +82,7 @@ export default function TeacherDetailsPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="p-8 text-center text-gray-500">Loading teacher details...</div>
+        <TikTokLoader text="Fetching teacher details..." />
       </div>
     );
   }

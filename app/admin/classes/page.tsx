@@ -1,6 +1,7 @@
 'use client';
 
 import { useAlert } from '@/components/shared/AlertProvider';
+import TikTokLoader from '@/components/TikTokLoader';
 import { getLevelName } from '@/lib/utils/class-levels';
 import { Class } from '@/types';
 import { Edit, GraduationCap, MoreVertical, Plus, School, Search, Users } from 'lucide-react';
@@ -100,7 +101,9 @@ export default function ClassesPage() {
       {/* Classes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {loading ? (
-          <div className="col-span-full p-8 text-center text-gray-500">Loading classes...</div>
+          <div className="col-span-full">
+            <TikTokLoader text="Fetching classes..." />
+          </div>
         ) : filteredClasses.length === 0 ? (
           <div className="col-span-full p-8 text-center">
             <p className="text-gray-500 mb-4">No classes found</p>

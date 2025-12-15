@@ -1,58 +1,140 @@
 "use client";
 
+
 interface TikTokLoaderProps {
   size?: "sm" | "md" | "lg";
+  variant?: "spinner" | "dots" | "pulse";
+  text?: string;
+  fullScreen?: boolean;
+  inline?: boolean;
   className?: string;
 }
 
-export default function TikTokLoader({ size = "md", className = "" }: TikTokLoaderProps) {
-  const sizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-12 h-12",
-    lg: "w-16 h-16",
+export default function TikTokLoader({ 
+  size = "md", 
+  variant = "spinner",
+  text,
+  fullScreen = false,
+  inline = false,
+  className = "" 
+}: TikTokLoaderProps) {
+  // Size configurations
+  const sizeConfig = {
+    sm: {
+      spinner: "w-5 h-5 border-2",
+      dot: "w-1.5 h-1.5",
+      text: "text-xs",
+      gap: "gap-2",
+    },
+    md: {
+      spinner: "w-8 h-8 border-4",
+      dot: "w-2 h-2",
+      text: "text-sm",
+      gap: "gap-3",
+    },
+    lg: {
+      spinner: "w-12 h-12 border-4",
+      dot: "w-2.5 h-2.5",
+      text: "text-base",
+      gap: "gap-4",
+    },
   };
 
-  const dotSizeClasses = {
-    sm: "w-1.5 h-1.5",
-    md: "w-2.5 h-2.5",
-    lg: "w-3.5 h-3.5",
+  const config = sizeConfig[size];
+
+  // Spinner variant - clean circular spinner
+  const SpinnerLoader = () => (
+    <div 
+      className={`${config.spinner} border-blue-200 border-t-blue-600 rounded-full animate-spin`}
+      role="status"
+      aria-label="Loading"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+
+  // Dots variant - three bouncing dots
+  const DotsLoader = () => (
+    <div className={`flex ${config.gap} items-center`} role="status" aria-label="Loading">
+      {[0, 1, 2].map((index) => (
+        <div
+          key={index}
+          className={`${config.dot} bg-blue-600 rounded-full animate-bounce`}
+          style={{
+            animationDelay: `${index * 0.16}s`,
+            animationDuration: '1.4s',
+          }}
+        ></div>
+      ))}
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+
+  // Pulse variant - pulsing circle
+  const PulseLoader = () => (
+    <div 
+      className={`${config.spinner} bg-blue-600 rounded-full animate-pulse`}
+      role="status"
+      aria-label="Loading"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+
+  // Render the appropriate loader variant
+  const renderLoader = () => {
+    switch (variant) {
+      case "dots":
+        return <DotsLoader />;
+      case "pulse":
+        return <PulseLoader />;
+      case "spinner":
+      default:
+        return <SpinnerLoader />;
+    }
   };
 
-  const containerPadding = {
-    sm: "p-2",
-    md: "p-3",
-    lg: "p-4",
-  };
+  // Content wrapper
+  const content = (
+    <div className={`flex flex-col items-center justify-center ${config.gap}`}>
+      {renderLoader()}
+      {text && (
+        <p className={`${config.text} text-gray-600 dark:text-gray-400 font-medium`}>
+          {text}
+        </p>
+      )}
+    </div>
+  );
 
-  return (
-    <div className={`relative ${sizeClasses[size]} ${className}`}>
-      {/* Outer rotating circle with gradient */}
-      <div className="absolute inset-0 border-2 border-blue-500/20 rounded-full"></div>
-      <div className="absolute inset-0 border-2 border-transparent border-t-blue-500 rounded-full animate-spin-tiktok"></div>
-      
-      {/* Dots rotating around the circle */}
-      <div className={`absolute inset-0 ${containerPadding[size]} animate-spin-tiktok-reverse`}>
-        <div 
-          className={`absolute top-0 left-1/2 -translate-x-1/2 ${dotSizeClasses[size]} bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-pulse-tiktok`} 
-          style={{ animationDelay: '0s' }}
-        ></div>
-        <div 
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 ${dotSizeClasses[size]} bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-pulse-tiktok`} 
-          style={{ animationDelay: '0.15s' }}
-        ></div>
-        <div 
-          className={`absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 ${dotSizeClasses[size]} bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-pulse-tiktok`} 
-          style={{ animationDelay: '0.3s' }}
-        ></div>
-        <div 
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 ${dotSizeClasses[size]} bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-pulse-tiktok`} 
-          style={{ animationDelay: '0.45s' }}
-        ></div>
+  // Full screen wrapper
+  if (fullScreen) {
+    return (
+      <div className="fixed inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-200 dark:border-gray-700">
+          {content}
+        </div>
       </div>
-      
-      {/* Center pulsing dot */}
-      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${dotSizeClasses[size]} bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-pulse`}></div>
+    );
+  }
+
+  // Inline wrapper (no padding, just the loader)
+  if (inline) {
+    return (
+      <div className={`inline-flex items-center ${config.gap} ${className}`}>
+        {renderLoader()}
+        {text && (
+          <span className={`${config.text} text-gray-600 dark:text-gray-400`}>
+            {text}
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  // Default wrapper (centered with padding)
+  return (
+    <div className={`flex items-center justify-center py-8 ${className}`}>
+      {content}
     </div>
   );
 }
-

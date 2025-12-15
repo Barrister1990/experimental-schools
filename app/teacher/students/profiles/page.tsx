@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
@@ -95,9 +96,7 @@ export default function StudentProfilesPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
+        <TikTokLoader text="Fetching student profiles..." />
       </div>
     );
   }

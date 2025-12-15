@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useAlert } from '@/components/shared/AlertProvider';
 import { ClassTeacherEvaluation, ClassTeacherReward, ConductRating, InterestLevel } from '@/lib/services/evaluation-service';
 import { offlineTeacherService } from '@/lib/services/offline-teacher-service';
@@ -353,9 +354,7 @@ export default function ConductPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
+        <TikTokLoader text="Fetching conduct data..." />
       </div>
     );
   }

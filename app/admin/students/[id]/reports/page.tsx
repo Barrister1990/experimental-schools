@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { Student } from '@/types';
 import { ArrowLeft, Calendar, Download, FileText, Filter, Printer } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -83,7 +84,7 @@ export default function StudentReportsPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="p-8 text-center text-gray-500">Loading...</div>
+        <TikTokLoader text="Fetching student data..." />
       </div>
     );
   }

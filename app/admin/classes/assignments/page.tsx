@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, School, UserCheck, Users } from 'lucide-react';
@@ -53,7 +54,7 @@ export default function ClassAssignmentsPage() {
   if (loading) {
     return (
       <div className="w-full min-w-0 space-y-4 md:space-y-6">
-        <div className="p-8 text-center text-gray-500">Loading assignments...</div>
+        <TikTokLoader text="Fetching assignments..." />
       </div>
     );
   }

@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, UserCheck, School, BookOpen, Plus, MoreVertical, X, Save, Loader2 } from 'lucide-react';
@@ -280,8 +281,8 @@ export default function TeacherAssignmentsPage() {
       {/* Assignments List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-500">
-            Loading assignments...
+          <div className="bg-white rounded-lg border border-gray-200">
+            <TikTokLoader text="Fetching assignments..." />
           </div>
         ) : assignments.length === 0 ? (
           <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">

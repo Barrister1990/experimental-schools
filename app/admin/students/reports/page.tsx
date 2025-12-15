@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { Class, Student } from '@/types';
 import { ArrowLeft, Download, FileText, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -148,7 +149,7 @@ export default function StudentReportsPage() {
       {/* Report Data */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Loading report data...</div>
+          <TikTokLoader text="Fetching report data..." />
         ) : filteredStudents.length === 0 ? (
           <div className="p-8 text-center text-gray-500">No students found for selected filters</div>
         ) : (

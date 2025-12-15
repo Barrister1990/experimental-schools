@@ -1,5 +1,6 @@
 'use client';
 
+import TikTokLoader from '@/components/TikTokLoader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Check, X, Save, Loader2 } from 'lucide-react';
@@ -184,8 +185,8 @@ export default function TeacherPermissionsPage() {
 
       {/* Permissions Grid */}
       {loading ? (
-        <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-500">
-          Loading permissions...
+        <div className="bg-white rounded-lg border border-gray-200">
+          <TikTokLoader text="Fetching permissions..." />
         </div>
       ) : (
         <div className="space-y-6">
