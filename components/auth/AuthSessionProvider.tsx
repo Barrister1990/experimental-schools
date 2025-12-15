@@ -10,7 +10,7 @@ import { supabase } from '@/lib/supabase/client';
  * Wraps the app to handle session persistence across page refreshes
  */
 export function AuthSessionProvider({ children }: { children: React.ReactNode }) {
-  const { setUser, user: currentUser } = useAuthStore();
+  const { setUser, setLoading, user: currentUser } = useAuthStore();
 
   useEffect(() => {
     let mounted = true;
@@ -18,6 +18,9 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
     // Initialize session on mount
     const initSession = async () => {
       try {
+        // Set loading to true at start (in case it was reset)
+        setLoading(true);
+        
         // Check for existing session
         const { data: { session } } = await supabase.auth.getSession();
 
@@ -26,10 +29,24 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
           const user = await authService.getCurrentUser();
           if (user && mounted) {
             setUser(user);
+          } else if (mounted) {
+            // No user found, clear state
+            setUser(null);
           }
+        } else if (mounted) {
+          // No session, clear state
+          setUser(null);
         }
       } catch (error) {
         console.error('Error initializing session:', error);
+        if (mounted) {
+          setUser(null);
+        }
+      } finally {
+        // Always set loading to false after initialization completes
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -47,22 +64,23 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
         // Check current user from store state
         const storeState = useAuthStore.getState();
         if (!storeState.user) {
-        const user = await authService.getCurrentUser();
+          const user = await authService.getCurrentUser();
           if (user && mounted) {
-          setUser(user);
+            setUser(user);
           }
         }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
+        setLoading(false);
       } else if (event === 'TOKEN_REFRESHED' && session) {
         // Refresh user data when token is refreshed (background operation)
         // Defer to avoid blocking UI
         setTimeout(async () => {
           if (mounted) {
-        const user = await authService.getCurrentUser();
+            const user = await authService.getCurrentUser();
             if (user && mounted) {
-          setUser(user);
-        }
+              setUser(user);
+            }
           }
         }, 100);
       }
@@ -72,7 +90,7 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [setUser]);
+  }, [setUser, setLoading]);
 
   return <>{children}</>;
 }

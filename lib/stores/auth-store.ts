@@ -20,13 +20,14 @@ interface AuthStore {
   resetPassword: (token: string, newPassword: string) => Promise<void>;
   clearError: () => void;
   setUser: (user: User | null) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStore>()((set) => ({
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true, // Start as true - will be set to false after session initialization
       error: null,
 
       login: async (credentials) => {
@@ -132,6 +133,10 @@ export const useAuthStore = create<AuthStore>()((set) => ({
           isAuthenticated: !!user,
           token: null, // Token is managed by Supabase session
         });
+      },
+
+      setLoading: (loading: boolean) => {
+        set({ isLoading: loading });
       },
     })
 );

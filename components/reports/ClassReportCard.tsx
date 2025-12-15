@@ -227,7 +227,7 @@ const generateReportCardHTML = (
   // Get attendance data
   const presentDays = attendance?.presentDays || 0;
   const totalDays = attendance?.totalDays || 0;
-  const attendanceDisplay = totalDays > 0 ? `${presentDays} out of ${totalDays}` : '.................';
+
   
   // Format dates
   const formattedClosingDate = formatDate(closingDate);
@@ -250,7 +250,7 @@ const generateReportCardHTML = (
           <div class="student-box">
             <p><strong>TERM:</strong> ${term}</p>
             <p><strong>ACADEMIC YEAR:</strong> ${year}</p>
-            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${rollNumber} of ${totalStudents || ''}` : '...................'}</p>
+            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${totalStudents || ''}` : '...................'}</p>
           </div>
           <div class="student-box">
             <p><strong>POSITION:</strong> ${classPosition ? classPosition : '...............'}</p>
@@ -290,7 +290,7 @@ const generateReportCardHTML = (
         </table>
         <div class="remarks">
           <div class="student-box">
-            <p><strong>ATTENDANCE:</strong> ${attendanceDisplay}</p>
+            <p><strong>ATTENDANCE:</strong> ${presentDays || "..............."}</p>
             <p><strong>OUT OF:</strong> ${totalDays > 0 ? totalDays : '...............'}</p>
             <p><strong>PROMOTED TO:</strong>...............</p>
           </div>
@@ -301,7 +301,7 @@ const generateReportCardHTML = (
         <div class="signatures">
           <p><strong>HEADMASTER'S SIGNATURE:</strong>...........................................</p>
         </div>
-        <table>
+                <table>
     <thead>
       <tr class="header-row">
       <th class="header-grade">MARKS</th>
@@ -335,6 +335,10 @@ const generateReportCardHTML = (
         <td>Approaching Proficiency</td>
         <td></td>
         <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
       </div>
     `;
   } else if (classLevel === 'Basic 1' || classLevel === 'Basic 2' || classLevel === 'Basic 3') {
@@ -353,7 +357,7 @@ const generateReportCardHTML = (
           <div class="student-box">
             <p><strong>TERM:</strong> ${term}</p>
             <p><strong>ACADEMIC YEAR:</strong> ${year}</p>
-            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${rollNumber} of ${totalStudents || ''}` : '...................'}</p>
+            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${totalStudents || ''}` : '...................'}</p>
           </div>
           <div class="student-box">
             <p><strong>POSITION:</strong> ${classPosition ? classPosition : '...............'}</p>
@@ -393,7 +397,7 @@ const generateReportCardHTML = (
         </table>
         <div class="remarks">
           <div class="student-box">
-            <p><strong>ATTENDANCE:</strong> ${attendanceDisplay}</p>
+            <p><strong>ATTENDANCE:</strong> ${presentDays || "..............."}</p>
             <p><strong>OUT OF:</strong> ${totalDays > 0 ? totalDays : '...............'}</p>
             <p><strong>PROMOTED TO:</strong>...............</p>
           </div>
@@ -460,7 +464,7 @@ const generateReportCardHTML = (
           <div class="student-box">
             <p><strong>TERM:</strong> ${term}</p>
             <p><strong>ACADEMIC YEAR:</strong> ${year}</p>
-            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${rollNumber} of ${totalStudents || ''}` : '...................'}</p>
+            <p><strong>NO. ON ROLL:</strong> ${rollNumber ? `${totalStudents || ''}` : '...................'}</p>
           </div>
           <div class="student-box">
             <p><strong>POSITION:</strong> ${classPosition ? classPosition : '...............'}</p>
@@ -500,7 +504,7 @@ const generateReportCardHTML = (
         </table>
         <div class="remarks">
           <div class="student-box">
-            <p><strong>ATTENDANCE:</strong> ${attendanceDisplay}</p>
+            <p><strong>ATTENDANCE:</strong> ${presentDays || "..............."}</p>
             <p><strong>OUT OF:</strong> ${totalDays > 0 ? totalDays : '...............'}</p>
             <p><strong>PROMOTED TO:</strong>...............</p>
           </div>
@@ -570,7 +574,7 @@ const generateReportCardHTML = (
           <div class="student-box">
             <p><strong>TERM:</strong> ${term}</p>
             <p><strong>ACADEMIC YEAR:</strong> ${year}</p>
-            <p><strong>NO. ON ROLL:</strong> ${rollNumber && totalStudents ? `${rollNumber} of ${totalStudents}` : '.....................'}</p>
+            <p><strong>NO. ON ROLL:</strong> ${totalStudents ? `${totalStudents}` : '.....................'}</p>
           </div>
           <div class="student-box">
             <p><strong>AGGREGATE:</strong> ${aggregate}</p>
@@ -612,7 +616,7 @@ const generateReportCardHTML = (
         </table>
         <div class="remarks">
           <div class="student-box">
-            <p><strong>ATTENDANCE:</strong> ${attendanceDisplay}</p>
+            <p><strong>ATTENDANCE:</strong> ${presentDays || "..............."}</p>
             <p><strong>OUT OF:</strong> ${totalDays > 0 ? totalDays : '...............'}</p>
             <p><strong>PROMOTED TO:</strong>...............</p>
           </div>
@@ -740,23 +744,31 @@ const ClassReportCard: React.FC<ClassReportCardProps> = ({
         <title>Class Report Cards</title>
         <style>
           @page { size: legal; margin: 0.5in; }
-          body { font-family: Arial, sans-serif; margin: 15px; font-size: 12pt; }
-          .container { max-width: 100%; margin: 0 auto; }
-          .title { text-align: center; margin: 1px auto; font-size: 12pt; }
-          .student-info { width: 100%; font-size: 12pt; }
-          .student-box { display: inline-flex; justify-content: space-between; width: 100%; margin: 0 auto; }
-          .table-container { border-collapse: collapse; width: 100%; font-size: 12pt; }
-          .table-container th, .table-container td { border: 1px solid black; padding: 8px; font-size: 12pt; }
-          .table-container th { background-color: #f4f4f4; font-size: 12pt; }
-          table { width: 100%; border-collapse: collapse; font-size: 12pt; }
-          .header-row th { border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; font-size: 12pt; }
-          .data-row td { border: 1px solid black; padding: 8px; text-align: center; font-size: 12pt; }
-          .header-grade { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; }
-          .header-interp { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; }
-          .header-inter { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; }
+          body { font-family: "Times New Roman", Times, serif; margin: 15px; font-size: 12pt; word-spacing: 1.5; }
+          .container { max-width: 100%; margin: 0 auto; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .title { text-align: center; margin: 3px auto; font-size: 14pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .student-info { width: 100%; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .student-box { display: inline-flex; justify-content: space-between; width: 100%; margin: 0px; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .table-container { border-collapse: collapse; width: 100%; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .table-container th, .table-container td { border: 1px solid black; padding: 8px; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .table-container th { background-color: #f4f4f4; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          /* Center align score columns (CLASS SCORE, EXAMS SCORE, TOTAL SCORE) - columns 2, 3, 4 */
+          .table-container th:nth-child(2), .table-container th:nth-child(3), .table-container th:nth-child(4) { text-align: center; }
+          .table-container td:nth-child(2), .table-container td:nth-child(3), .table-container td:nth-child(4) { text-align: center; }
+          /* Center align GRADE column - column 5 */
+          .table-container th:nth-child(5) { text-align: center; }
+          .table-container td:nth-child(5) { text-align: center; }
+          table { width: 100%; border-collapse: collapse; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .header-row th { border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .data-row td { border: 1px solid black; padding: 8px; text-align: center; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .header-grade { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .header-interp { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
+          .header-inter { border-top: none; border-bottom: 2px solid black; text-align: center; font-size: 12pt; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
           img { height: 100px; width: 100px; margin-left: 43%; }
-          .report-card { page-break-after: always; margin-bottom: 20px; }
+          .report-card { page-break-after: always; margin-bottom: 20px; font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
           .report-card:last-child { page-break-after: auto; }
+          .remarks { font-family: "Times New Roman", Times, serif; word-spacing: 1.5; margin-top: 14px; }
+          .signatures { font-family: "Times New Roman", Times, serif; word-spacing: 1.5; }
         </style>
       </head>
       <body>
