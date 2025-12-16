@@ -6,7 +6,7 @@ import { useOfflineClasses, useOfflineStudents, useOfflineSubjects } from '@/hoo
 import { offlineTeacherService } from '@/lib/services/offline-teacher-service';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { getAcademicYearOptions } from '@/lib/utils/academic-years';
-import { calculateGrade, getGradeColorClass } from '@/lib/utils/grading';
+import { getGradeColorClass } from '@/lib/utils/grading';
 import { Class } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, BookOpen, Calendar, ClipboardList, Filter, Info, Loader2, Save, Users } from 'lucide-react';
@@ -14,6 +14,16 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+// Hardcoded grading system matching report cards (HP, P, AP, D, E)
+// This matches the grading system used in PrintReportCard and ClassReportCard
+const calculateGradeFromPercentage = (percentage: number): string => {
+  if (percentage >= 80) return 'HP';
+  if (percentage >= 68) return 'P';
+  if (percentage >= 54) return 'AP';
+  if (percentage >= 40) return 'D';
+  return 'E';
+};
 
 // Updated schema: assessment fields are optional, but at least one must be provided
 // Validation only checks max values when a number is entered
@@ -240,8 +250,8 @@ export default function EnterGradesPage() {
     // Total Score
     const total = classScore + examScore;
 
-    // Grade Letter using universal grading system
-    const grade = calculateGrade(total);
+    // Grade Letter using hardcoded grading system (matching report cards)
+    const grade = calculateGradeFromPercentage(total);
 
     return {
       classScore: Math.round(classScore * 10) / 10,

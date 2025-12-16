@@ -1,12 +1,12 @@
 'use client';
 
-import TikTokLoader from '@/components/TikTokLoader';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/stores/auth-store';
-import { Search, Users, Filter, MoreVertical, Eye, FileText } from 'lucide-react';
-import { Student, Class } from '@/types';
 import { useAlert } from '@/components/shared/AlertProvider';
+import TikTokLoader from '@/components/TikTokLoader';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { Class, Student } from '@/types';
+import { Filter, Search, Users } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function StudentsPage() {
   const router = useRouter();
@@ -30,32 +30,11 @@ export default function StudentsPage() {
         const allClasses = await classesRes.json();
         setClasses(Array.isArray(allClasses) ? allClasses : []);
 
-        // Filter students based on teacher role
+        // Load all students - all teachers can view all students
+        const studentsRes = await fetch('/api/students', { credentials: 'include' });
         let relevantStudents: Student[] = [];
-        
-        if (user?.isClassTeacher) {
-          // Class teachers see students in their assigned class(es)
-          const teacherClassesRes = await fetch(`/api/classes/teacher/${user.id}`, { credentials: 'include' });
-          if (teacherClassesRes.ok) {
-            const teacherClasses = await teacherClassesRes.json();
-            const myClassIds = Array.isArray(teacherClasses) ? teacherClasses.map((c: Class) => c.id) : [];
-            
-            // Load students for each class
-            const studentPromises = myClassIds.map((classId: string) =>
-              fetch(`/api/students?classId=${classId}`, { credentials: 'include' })
-            );
-            const studentResponses = await Promise.all(studentPromises);
-            const studentDataArrays = await Promise.all(
-              studentResponses.map((res) => res.ok ? res.json() : Promise.resolve([]))
-            );
-            relevantStudents = studentDataArrays.flat();
-          }
-        } else {
-          // Subject teachers see all students (they teach across classes)
-          const studentsRes = await fetch('/api/students', { credentials: 'include' });
-          if (studentsRes.ok) {
-            relevantStudents = await studentsRes.json();
-          }
+        if (studentsRes.ok) {
+          relevantStudents = await studentsRes.json();
         }
 
         setStudents(Array.isArray(relevantStudents) ? relevantStudents : []);
@@ -71,7 +50,7 @@ export default function StudentsPage() {
     if (user?.id) {
       loadData();
     }
-  }, [user?.id, user?.isClassTeacher]);
+  }, [user?.id]);
 
   useEffect(() => {
     let filtered = students;
