@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingOverlay from '@/components/shared/LoadingOverlay';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { UserRole } from '@/types';
 import { useEffect } from 'react';
@@ -60,11 +61,7 @@ export default function ProtectedRoute({
 
   // Show loading state
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <LoadingOverlay isLoading={true} message="Verifying authentication..." />;
   }
 
   // Show nothing while redirecting

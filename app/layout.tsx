@@ -1,5 +1,6 @@
 import { AuthSessionProvider } from "@/components/auth/AuthSessionProvider";
 import { AlertProvider } from "@/components/shared/AlertProvider";
+import GlobalLoadingOverlay from "@/components/shared/GlobalLoadingOverlay";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 import { OfflineIndicator } from "@/components/shared/OfflineIndicator";
 import { ServiceWorkerRegistration } from "@/components/shared/ServiceWorkerRegistration";
@@ -39,6 +40,7 @@ export default function RootLayout({
         <ServiceWorkerRegistration />
         <SyncMessageHandler />
         <AuthSessionProvider>
+          <GlobalLoadingOverlay />
           <AlertProvider>
             {children}
             <InstallPrompt />
