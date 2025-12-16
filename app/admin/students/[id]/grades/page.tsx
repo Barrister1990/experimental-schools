@@ -2,12 +2,22 @@
 
 import PrintReportCard from '@/components/reports/PrintReportCard';
 import TikTokLoader from '@/components/TikTokLoader';
-import { calculateGrade, getGradeColorClass } from '@/lib/utils/grading';
+import { getAcademicYearOptions, getCurrentAcademicYear } from '@/lib/utils/academic-years';
+import { getGradeColorClass } from '@/lib/utils/grading';
 import { AssessmentType, Class, Student, Subject } from '@/types';
 import { ArrowLeft, Calendar, Filter } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getCurrentAcademicYear, getAcademicYearOptions } from '@/lib/utils/academic-years';
+
+// Hardcoded grading system matching report cards (HP, P, AP, D, E)
+// This matches the grading system used in PrintReportCard and ClassReportCard
+const calculateGradeFromPercentage = (percentage: number): string => {
+  if (percentage >= 80) return 'HP';
+  if (percentage >= 68) return 'P';
+  if (percentage >= 54) return 'AP';
+  if (percentage >= 40) return 'D';
+  return 'E';
+};
 
 interface AssessmentScore {
   type: AssessmentType;
@@ -99,7 +109,8 @@ export default function StudentGradesPage() {
             const classScore = classMax > 0 ? (classTotal / classMax) * 50 : 0;
             const examScore = ((grade.exam || 0) / 100) * 50;
             const total = classScore + examScore;
-            const gradeLetter = grade.grade || calculateGrade(total);
+            // Always recalculate grade from scores using hardcoded grading system (matching report cards)
+            const gradeLetter = calculateGradeFromPercentage(total);
 
             if (!subjectGradeMap.has(subjectId)) {
               subjectGradeMap.set(subjectId, {
@@ -284,15 +295,20 @@ export default function StudentGradesPage() {
 
 
   // Prepare grade data for report card
-  const filteredGradesForReport = subjectGrades.map((sg) => ({
-    subject: sg.subjectName,
-    classScore: sg.classScore,
-    examScore: sg.examScore,
-    totalScore: sg.total,
-    grade: sg.grade,
-    position: sg.position,
-    remark: '', // Can be added later if needed
-  }));
+  // Recalculate grade from total score using hardcoded grading system (matching report cards)
+  const filteredGradesForReport = subjectGrades.map((sg) => {
+    // Always recalculate grade from total score using hardcoded grading system
+    const gradeLetter = calculateGradeFromPercentage(sg.total);
+    return {
+      subject: sg.subjectName,
+      classScore: sg.classScore,
+      examScore: sg.examScore,
+      totalScore: sg.total,
+      grade: gradeLetter, // Use recalculated grade
+      position: sg.position,
+      remark: '', // Can be added later if needed
+    };
+  });
 
   if (loading) {
     return (

@@ -1,16 +1,16 @@
 'use client';
 
-import TikTokLoader from '@/components/TikTokLoader';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/stores/auth-store';
-import { Filter, Calendar, ClipboardList, Eye } from 'lucide-react';
-import { Subject, Class } from '@/types';
-import { getLevelName, getLevelCategory } from '@/lib/utils/class-levels';
-import { getGradeColorClass } from '@/lib/utils/grading';
-import { GradeWithDetails } from '@/lib/services/grade-service';
 import { useAlert } from '@/components/shared/AlertProvider';
-import { getCurrentAcademicYear, getAcademicYearOptions } from '@/lib/utils/academic-years';
+import TikTokLoader from '@/components/TikTokLoader';
+import { GradeWithDetails } from '@/lib/services/grade-service';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { getAcademicYearOptions, getCurrentAcademicYear } from '@/lib/utils/academic-years';
+import { getLevelCategory, getLevelName } from '@/lib/utils/class-levels';
+import { calculateGrade, getGradeColorClass } from '@/lib/utils/grading';
+import { Class, Subject } from '@/types';
+import { Calendar, ClipboardList, Eye, Filter } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 // Using GradeWithDetails from grade-service
 type GradeRecord = GradeWithDetails;
@@ -288,7 +288,16 @@ export default function GradesPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredGrades.map((grade) => (
+                  {filteredGrades.map((grade) => {
+                    // Recalculate total and grade from current scores to ensure accuracy
+                    const classTotal = (grade.project || 0) + (grade.test1 || 0) + (grade.test2 || 0) + (grade.groupWork || 0);
+                    const classMax = 40 + 20 + 20 + 20; // 100
+                    const classScore = classMax > 0 ? (classTotal / classMax) * 50 : 0;
+                    const examScore = ((grade.exam || 0) / 100) * 50;
+                    const total = classScore + examScore;
+                    const gradeLetter = calculateGrade(total);
+                    
+                    return (
                     <tr key={grade.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-3 md:px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
                         {grade.studentName || 'N/A'}
@@ -309,11 +318,11 @@ export default function GradesPage() {
                         {grade.exam}
                       </td>
                       <td className="px-3 md:px-6 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 text-center">
-                        {grade.total?.toFixed(1) || '0.0'}
+                        {Math.round(total * 10) / 10}
                       </td>
                       <td className="px-3 md:px-6 py-3 whitespace-nowrap text-center">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getGradeColorClass(grade.grade || 'E')}`}>
-                        {grade.grade || 'N/A'}
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getGradeColorClass(gradeLetter)}`}>
+                        {gradeLetter}
                       </span>
                       </td>
                       <td className="px-3 md:px-6 py-3 whitespace-nowrap text-sm">
@@ -326,7 +335,8 @@ export default function GradesPage() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -2,6 +2,7 @@
 
 import { useAlert } from '@/components/shared/AlertProvider';
 import { getAcademicYearOptions, getCurrentAcademicYear } from '@/lib/utils/academic-years';
+import { calculateGrade } from '@/lib/utils/grading';
 import { Class, Subject } from '@/types';
 import { ArrowLeft, BarChart3, BookOpen, Calendar, Download, Filter, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -107,11 +108,17 @@ export default function AcademicReportsPage() {
         };
 
         filteredGrades.forEach((grade: any) => {
-          if (grade.grade) {
-            const gradeCode = grade.grade.toUpperCase();
-            if (distribution.hasOwnProperty(gradeCode)) {
-              distribution[gradeCode]++;
-            }
+          // Recalculate grade from current scores to ensure accuracy
+          const classTotal = (grade.project || 0) + (grade.test1 || 0) + (grade.test2 || 0) + (grade.groupWork || 0);
+          const classMax = 40 + 20 + 20 + 20; // 100
+          const classScore = classMax > 0 ? (classTotal / classMax) * 50 : 0;
+          const examScore = ((grade.exam || 0) / 100) * 50;
+          const total = classScore + examScore;
+          const gradeLetter = calculateGrade(total);
+          
+          const gradeCode = gradeLetter.toUpperCase();
+          if (distribution.hasOwnProperty(gradeCode)) {
+            distribution[gradeCode]++;
           }
         });
 

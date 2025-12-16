@@ -4,8 +4,8 @@
  */
 
 import { formatError } from '@/lib/utils/error-formatter';
-import type { SupabaseClient } from '@supabase/supabase-js';
 import { calculateGrade } from '@/lib/utils/grading';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export interface Grade {
   id: string;
@@ -20,6 +20,7 @@ export interface Grade {
   test2: number;
   groupWork: number;
   exam: number;
+  grade?: string; // Database-calculated grade (added by migration)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,11 +73,14 @@ class GradeService {
       exam: parseFloat(row.exam || '0'),
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
+      // Include database grade column if it exists (added by migration)
+      grade: row.grade || undefined,
     };
   }
 
   /**
    * Calculate class score, exam score, total, and grade
+   * Uses database grade if available (from migration), otherwise calculates it
    */
   private calculateGradeDetails(grade: Grade) {
     // Class Score: 50% of (Project + Test1 + Test2 + Group Work)
@@ -90,8 +94,8 @@ class GradeService {
     // Total Score
     const total = classScore + examScore;
 
-    // Grade Letter using universal grading system
-    const gradeLetter = calculateGrade(total);
+    // Use database grade if available (calculated by SQL trigger), otherwise calculate it
+    const gradeLetter = grade.grade || calculateGrade(total);
 
     return {
       classScore: Math.round(classScore * 10) / 10,
@@ -210,6 +214,8 @@ class GradeService {
           subjectName: subject?.name,
           className: classData?.name,
           ...details,
+          // Prioritize database grade over calculated grade
+          grade: grade.grade || details.grade,
         };
       });
     } catch (error: any) {
@@ -282,14 +288,33 @@ class GradeService {
 
       if (existing) {
         // Update existing
-        const { data, error } = await supabase
+        // First update the scores (this should trigger the database trigger)
+        const { error: updateError } = await supabase
           .from('grades')
           .update(gradePayload)
-          .eq('id', existing.id)
+          .eq('id', existing.id);
+
+        if (updateError) throw updateError;
+
+        // Explicitly recalculate the grade using RPC function
+        // This ensures the grade is correct even if the trigger doesn't fire
+        const { error: rpcError } = await supabase.rpc('recalculate_grade_for_record', {
+          grade_id: existing.id
+        });
+
+        // Log warning if RPC fails (trigger should still work)
+        if (rpcError) {
+          console.warn('Could not explicitly recalculate grade via RPC, relying on trigger:', rpcError);
+        }
+
+        // Fetch the updated record (should have correct grade from trigger or RPC)
+        const { data, error: fetchError } = await supabase
+          .from('grades')
           .select()
+          .eq('id', existing.id)
           .single();
 
-        if (error) throw error;
+        if (fetchError) throw fetchError;
         return this.mapDbToGrade(data);
       } else {
         // Create new
@@ -300,6 +325,27 @@ class GradeService {
           .single();
 
         if (error) throw error;
+        
+        // For new records, explicitly recalculate grade if trigger didn't set it
+        if (!data.grade) {
+          const { error: rpcError } = await supabase.rpc('recalculate_grade_for_record', {
+            grade_id: data.id
+          });
+
+          if (!rpcError) {
+            // Fetch again to get the calculated grade
+            const { data: updatedData } = await supabase
+              .from('grades')
+              .select()
+              .eq('id', data.id)
+              .single();
+            
+            if (updatedData) {
+              return this.mapDbToGrade(updatedData);
+            }
+          }
+        }
+        
         return this.mapDbToGrade(data);
       }
     } catch (error: any) {
