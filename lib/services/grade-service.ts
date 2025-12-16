@@ -192,7 +192,7 @@ class GradeService {
 
       // Fetch related data
       const [studentsRes, subjectsRes, classesRes] = await Promise.all([
-        supabase.from('students').select('id, first_name, last_name').in('id', studentIds),
+        supabase.from('students').select('id, first_name, middle_name, last_name').in('id', studentIds),
         supabase.from('subjects').select('id, name').in('id', subjectIds),
         supabase.from('classes').select('id, name').in('id', classIds),
       ]);
@@ -210,7 +210,7 @@ class GradeService {
 
         return {
           ...grade,
-          studentName: student ? `${student.first_name} ${student.last_name}` : undefined,
+          studentName: student ? `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim() : undefined,
           subjectName: subject?.name,
           className: classData?.name,
           ...details,

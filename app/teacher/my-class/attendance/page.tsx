@@ -384,7 +384,7 @@ export default function AttendancePage() {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-xs md:text-sm font-medium text-gray-900">
-                      {student.firstName} {student.lastName}
+                      {student.firstName} {student.middleName || ''} {student.lastName}
                     </p>
                     {record && (
                       <span className={`text-xs px-2 py-1 rounded-full ${

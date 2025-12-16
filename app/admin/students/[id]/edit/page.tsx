@@ -179,7 +179,7 @@ export default function EditStudentPage() {
         <div>
           <h1 className="text-xl md:text-3xl font-semibold text-gray-900">Edit Student</h1>
           <p className="text-xs md:text-sm text-gray-600 mt-1">
-            {student.firstName} {student.lastName} - {student.studentId}
+            {student.firstName} {student.middleName || ''} {student.lastName} - {student.studentId}
           </p>
         </div>
       </div>

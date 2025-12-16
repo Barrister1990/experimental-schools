@@ -5,7 +5,7 @@ import LoadingOverlay from './LoadingOverlay';
 
 /**
  * Splash Screen Component
- * Shows a beautiful animated loading overlay for 5 seconds on initial app load
+ * Shows a beautiful animated loading overlay for 1 second on initial app load
  * Perfect for PWA installations to provide a polished first impression
  */
 export default function SplashScreen() {
@@ -28,8 +28,8 @@ export default function SplashScreen() {
     // Mark as visited
     sessionStorage.setItem('app_visited', 'true');
 
-    // Show splash for exactly 5 seconds
-    const splashDuration = 5000; // 5 seconds
+        // Show splash for exactly 1 second
+        const splashDuration = 1000; // 1 second
     
     const timer = setTimeout(() => {
       setShow(false);

@@ -485,7 +485,7 @@ export default function EnterGradesPage() {
                       <option value="">Select student</option>
                       {filteredStudents.map((student) => (
                         <option key={student.id} value={student.id}>
-                          {student.firstName} {student.lastName} ({student.studentId})
+                          {student.firstName} {student.middleName || ''} {student.lastName} ({student.studentId})
                         </option>
                       ))}
                     </select>

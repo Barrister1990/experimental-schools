@@ -1,22 +1,35 @@
 'use client';
 
+import { useAlert } from '@/components/shared/AlertProvider';
 import TikTokLoader from '@/components/TikTokLoader';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { getLevelName, isHighestLevel } from '@/lib/utils/class-levels';
 import { Class, Student, User } from '@/types';
-import { ArrowLeft, Edit, GraduationCap, Plus, Trophy, UserCheck } from 'lucide-react';
+import { ArrowLeft, Edit, GraduationCap, Plus, Trash2, Trophy, UserCheck } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useAlert } from '@/components/shared/AlertProvider';
 
 export default function ClassDetailsPage() {
   const router = useRouter();
-  const { showError } = useAlert();
+  const { showError, showSuccess } = useAlert();
   const params = useParams();
   const classId = params.id as string;
   const [classInfo, setClassInfo] = useState<Class | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [classTeacher, setClassTeacher] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -78,6 +91,52 @@ export default function ClassDetailsPage() {
       loadData();
     }
   }, [classId]);
+
+  const handleDeleteClick = (e: React.MouseEvent, student: Student) => {
+    e.stopPropagation(); // Prevent row click
+    setStudentToDelete(student);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!studentToDelete) return;
+
+    setDeleting(true);
+    try {
+      const response = await fetch(`/api/students/${studentToDelete.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to delete student');
+      }
+
+      // Remove student from local state
+      setStudents(students.filter((s) => s.id !== studentToDelete.id));
+      showSuccess(`Student ${studentToDelete.firstName} ${studentToDelete.lastName} has been deleted successfully.`);
+      setDeleteDialogOpen(false);
+      setStudentToDelete(null);
+
+      // Reload class info to update student count
+      const classRes = await fetch(`/api/classes/${classId}`, { credentials: 'include' });
+      if (classRes.ok) {
+        const classData = await classRes.json();
+        setClassInfo(classData);
+      }
+    } catch (error: any) {
+      console.error('Failed to delete student:', error);
+      showError(error.message || 'Failed to delete student. Please try again.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setStudentToDelete(null);
+  };
 
   if (loading) {
     return (
@@ -249,6 +308,9 @@ export default function ClassDetailsPage() {
                   <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                     Status
                   </th>
+                  <th className="px-3 md:px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -260,14 +322,14 @@ export default function ClassDetailsPage() {
                   >
                     <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2 md:gap-3">
-                        <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
                           <span className="text-xs md:text-sm font-medium text-blue-600">
                             {student.firstName.charAt(0)}{student.lastName.charAt(0)}
                           </span>
                         </div>
                         <div className="min-w-0">
                           <div className="text-sm md:text-base font-medium text-gray-900 truncate">
-                            {student.firstName} {student.middleName} {student.lastName}
+                            {student.firstName} {student.middleName || ''} {student.lastName}
                           </div>
                           <div className="text-xs text-gray-500 md:hidden">
                             {student.studentId}
@@ -287,6 +349,15 @@ export default function ClassDetailsPage() {
                         {student.status.charAt(0).toUpperCase() + student.status.slice(1)}
                       </span>
                     </td>
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        onClick={(e) => handleDeleteClick(e, student)}
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete student"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -294,6 +365,35 @@ export default function ClassDetailsPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Student</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete{' '}
+              <strong>
+                {studentToDelete?.firstName} {studentToDelete?.middleName || ''} {studentToDelete?.lastName}
+              </strong>
+              ? This action cannot be undone and will permanently delete all records associated with this student,
+              including grades, attendance, and evaluations.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel} disabled={deleting}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {deleting ? 'Deleting...' : 'Delete Student'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

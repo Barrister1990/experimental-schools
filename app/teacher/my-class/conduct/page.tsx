@@ -451,7 +451,7 @@ export default function ConductPage() {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-xs md:text-sm font-medium text-gray-900">
-                      {student.firstName} {student.lastName}
+                      {student.firstName} {student.middleName || ''} {student.lastName}
                     </p>
                     {evaluation && (evaluation.conductRating || evaluation.interestLevel) && (
                       <Award className="h-4 w-4 text-green-600" />

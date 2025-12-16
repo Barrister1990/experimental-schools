@@ -1,12 +1,12 @@
 'use client';
 
-import TikTokLoader from '@/components/TikTokLoader';
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, Calendar, TrendingUp, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import { Student } from '@/types';
-import { Attendance } from '@/lib/services/attendance-service';
 import { useAlert } from '@/components/shared/AlertProvider';
+import TikTokLoader from '@/components/TikTokLoader';
+import { Attendance } from '@/lib/services/attendance-service';
+import { Student } from '@/types';
+import { AlertCircle, ArrowLeft, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface AttendanceRecord {
   id: string;
@@ -122,7 +122,7 @@ export default function StudentAttendancePage() {
         <div>
           <h1 className="text-xl md:text-3xl font-semibold text-gray-900">Attendance Records</h1>
           <p className="text-xs md:text-sm text-gray-600 mt-1">
-            {student.firstName} {student.lastName} - {student.studentId}
+            {student.firstName} {student.middleName || ''} {student.lastName} - {student.studentId}
           </p>
         </div>
       </div>
