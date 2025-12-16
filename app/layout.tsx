@@ -3,6 +3,7 @@ import { AlertProvider } from "@/components/shared/AlertProvider";
 import GlobalLoadingOverlay from "@/components/shared/GlobalLoadingOverlay";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 import { OfflineIndicator } from "@/components/shared/OfflineIndicator";
+import SplashScreen from "@/components/shared/SplashScreen";
 import { ServiceWorkerRegistration } from "@/components/shared/ServiceWorkerRegistration";
 import { SyncMessageHandler } from "@/components/shared/SyncMessageHandler";
 import { SyncStatus } from "@/components/shared/SyncStatus";
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="antialiased font-sans">
+        <SplashScreen />
         <ServiceWorkerRegistration />
         <SyncMessageHandler />
         <AuthSessionProvider>

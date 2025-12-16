@@ -84,7 +84,7 @@ export default function TikTokLoader({
             style={{ animationDelay: `${index * 0.2}s` }}
           ></div>
           {/* Main dot */}
-          <div
+        <div 
             className={`${config.dot} bg-blue-600 rounded-full animate-bounce-loader relative z-10 shadow-lg`}
             style={{
               animationDelay: `${index * 0.2}s`,
@@ -102,15 +102,15 @@ export default function TikTokLoader({
       {/* Outer ripple */}
       <div 
         className={`absolute inset-0 ${config.pulse} bg-blue-400/30 rounded-full animate-ping`}
-        style={{ animationDelay: '0s' }}
-      ></div>
+          style={{ animationDelay: '0s' }}
+        ></div>
       {/* Middle ripple */}
       <div 
         className={`absolute inset-0 ${config.pulse} bg-blue-500/20 rounded-full animate-ping`}
-        style={{ animationDelay: '0.3s' }}
-      ></div>
+          style={{ animationDelay: '0.3s' }}
+        ></div>
       {/* Main pulse circle */}
-      <div 
+        <div 
         className={`${config.pulse} bg-blue-600 rounded-full animate-pulse-strong relative z-10 shadow-lg`}
       >
         <span className="sr-only">Loading...</span>

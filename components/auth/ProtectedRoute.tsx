@@ -46,11 +46,11 @@ export default function ProtectedRoute({
         });
 
         if (!hasAccess) {
-          // Redirect to appropriate dashboard based on role
+        // Redirect to appropriate dashboard based on role
           // Use window.location for reliable redirect
-          if (user.role === 'admin') {
+        if (user.role === 'admin') {
             window.location.href = '/admin/dashboard';
-          } else {
+        } else {
             window.location.href = '/teacher/dashboard';
           }
           return;
