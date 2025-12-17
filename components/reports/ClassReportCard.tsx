@@ -223,6 +223,7 @@ const generateReportCardHTML = (
   const classLevel = getLevelName(classInfo.level);
   const studentName = `${student.firstName} ${student.middleName || ''} ${student.lastName}`.trim();
   const logoPath = window.location.origin + '/logo.png';
+  const headmasterSignaturePath = window.location.origin + '/headmasterSign.png';
   
   // Get attendance data
   const presentDays = attendance?.presentDays || 0;
@@ -298,8 +299,9 @@ const generateReportCardHTML = (
           <p><strong>INTEREST:</strong> ${interest || '...............................................'}</p>
           <p><strong>CLASS TEACHER'S REMARKS:</strong> ${classTeacherRemarks || '............'}</p>
         </div>
-        <div class="signatures">
-          <p><strong>HEADMASTER'S SIGNATURE:</strong>...........................................</p>
+        <div class="signatures" style="position: relative; display: inline-block; width: 100%;">
+          <p style="display: inline-block; margin: 0; margin-right: 0; font-size: 12pt; font-weight: bold;"><strong>HEADMASTER'S SIGNATURE:</strong></p>
+          <img src="${headmasterSignaturePath}" alt="Headmaster Signature" style="position: relative; display: inline-block; max-width: 200px; height: auto; vertical-align: middle; margin-left: 5px;" />
         </div>
                 <table>
     <thead>
@@ -405,8 +407,9 @@ const generateReportCardHTML = (
           <p><strong>INTEREST:</strong> ${interest || '...............................................'}</p>
           <p><strong>CLASS TEACHER'S REMARKS:</strong> ${classTeacherRemarks || '............'}</p>
         </div>
-        <div class="signatures">
-          <p><strong>HEADMASTER'S SIGNATURE:</strong>...........................................</p>
+        <div class="signatures" style="position: relative; display: inline-block; width: 100%;">
+          <p style="display: inline-block; margin: 0; margin-right: 0; font-size: 12pt; font-weight: bold;"><strong>HEADMASTER'S SIGNATURE:</strong></p>
+          <img src="${headmasterSignaturePath}" alt="Headmaster Signature" style="position: relative; display: inline-block; max-width: 200px; height: auto; vertical-align: middle; margin-left: 5px;" />
         </div>
          <table>
     <thead>
@@ -512,8 +515,9 @@ const generateReportCardHTML = (
           <p><strong>INTEREST:</strong> ${interest || '...............................................'}</p>
           <p><strong>CLASS TEACHER'S REMARKS:</strong> ${classTeacherRemarks || '............'}</p>
         </div>
-        <div class="signatures">
-          <p><strong>HEADMASTER'S SIGNATURE:</strong>...........................................</p>
+        <div class="signatures" style="position: relative; display: inline-block; width: 100%;">
+          <p style="display: inline-block; margin: 0; margin-right: 0; font-size: 12pt; font-weight: bold;"><strong>HEADMASTER'S SIGNATURE:</strong></p>
+          <img src="${headmasterSignaturePath}" alt="Headmaster Signature" style="position: relative; display: inline-block; max-width: 200px; height: auto; vertical-align: middle; margin-left: 5px;" />
         </div>
          <table>
     <thead>
@@ -624,8 +628,9 @@ const generateReportCardHTML = (
           <p><strong>INTEREST:</strong> ${interest || '...............................................'}</p>
           <p><strong>CLASS TEACHER'S REMARKS:</strong> ${classTeacherRemarks || '............'}</p>
         </div>
-        <div class="signatures">
-          <p><strong>HEADMASTER'S SIGNATURE:</strong>...........................................</p>
+        <div class="signatures" style="position: relative; display: inline-block; width: 100%;">
+          <p style="display: inline-block; margin: 0; margin-right: 0; font-size: 12pt; font-weight: bold;"><strong>HEADMASTER'S SIGNATURE:</strong></p>
+          <img src="${headmasterSignaturePath}" alt="Headmaster Signature" style="position: relative; display: inline-block; max-width: 200px; height: auto; vertical-align: middle; margin-left: 5px;" />
         </div>
          <table>
     <thead>
