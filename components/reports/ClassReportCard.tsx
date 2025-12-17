@@ -720,6 +720,18 @@ const ClassReportCard: React.FC<ClassReportCardProps> = ({
         position: sg.position,
       }));
 
+      // Extract evaluation data, handling empty strings as undefined
+      // Log evaluation data for debugging
+      console.log(`[ClassReportCard] Student: ${data.student.firstName} ${data.student.lastName}`);
+      console.log(`[ClassReportCard] Evaluation object:`, data.evaluation);
+      console.log(`[ClassReportCard] Evaluation exists:`, !!data.evaluation);
+      
+      const conduct = data.evaluation?.conduct ? (typeof data.evaluation.conduct === 'string' ? data.evaluation.conduct.trim() : data.evaluation.conduct) : undefined;
+      const interest = data.evaluation?.interest ? (typeof data.evaluation.interest === 'string' ? data.evaluation.interest.trim() : data.evaluation.interest) : undefined;
+      const remarks = data.evaluation?.remarks ? (typeof data.evaluation.remarks === 'string' ? data.evaluation.remarks.trim() : data.evaluation.remarks) : undefined;
+      
+      console.log(`[ClassReportCard] Extracted - Conduct: "${conduct}", Interest: "${interest}", Remarks: "${remarks}"`);
+
       return generateReportCardHTML(
         data.student,
         classInfo,
@@ -727,9 +739,9 @@ const ClassReportCard: React.FC<ClassReportCardProps> = ({
         term,
         filteredGrades,
         data.attendance,
-        data.evaluation?.conduct,
-        data.evaluation?.interest,
-        data.evaluation?.remarks,
+        conduct,
+        interest,
+        remarks,
         data.classPosition,
         data.rollNumber,
         totalStudents,

@@ -171,14 +171,32 @@ export default function ClassStudentGradesPage() {
             );
             if (evalRes.ok) {
               const evaluations = await evalRes.json();
-              if (evaluations && evaluations.length > 0) {
-                const evaluation = evaluations[0];
-                evaluationData = {
-                  conduct: evaluation.conduct,
-                  interest: evaluation.interest,
-                  remarks: evaluation.remarks,
-                };
+              console.log(`[StudentGrades] Student ${student.firstName} ${student.lastName} - Evaluations API response:`, evaluations);
+              
+              // Handle both array and single object responses
+              let evaluation = null;
+              if (Array.isArray(evaluations)) {
+                if (evaluations.length > 0) {
+                  evaluation = evaluations[0];
+                }
+              } else if (evaluations && typeof evaluations === 'object') {
+                // Single object response
+                evaluation = evaluations;
               }
+              
+              if (evaluation) {
+                console.log(`[StudentGrades] Raw evaluation object:`, evaluation);
+                evaluationData = {
+                  conduct: evaluation.conductRating,
+                  interest: evaluation.interestLevel,
+                  remarks: evaluation.classTeacherRemarks,
+                };
+                console.log(`[StudentGrades] Processed evaluationData:`, evaluationData);
+              } else {
+                console.log(`[StudentGrades] No evaluations found for student ${student.firstName} ${student.lastName}`);
+              }
+            } else {
+              console.log(`[StudentGrades] Failed to fetch evaluations for student ${student.firstName} ${student.lastName}, status:`, evalRes.status);
             }
 
             return {
@@ -235,6 +253,19 @@ export default function ClassStudentGradesPage() {
         // Assign roll numbers
         sortedByEnrollment.forEach((data, index) => {
           data.rollNumber = index + 1;
+        });
+
+        // Log evaluation data before setting state
+        console.log('[StudentGrades] Final studentGradesData with evaluations:');
+        studentsWithOverallTotal.forEach((data) => {
+          console.log(`  Student: ${data.student.firstName} ${data.student.lastName}`);
+          console.log(`    Evaluation:`, data.evaluation);
+          console.log(`    Has evaluation:`, !!data.evaluation);
+          if (data.evaluation) {
+            console.log(`    Conduct: "${data.evaluation.conduct}"`);
+            console.log(`    Interest: "${data.evaluation.interest}"`);
+            console.log(`    Remarks: "${data.evaluation.remarks}"`);
+          }
         });
 
         setStudentGradesData(studentsWithOverallTotal);
