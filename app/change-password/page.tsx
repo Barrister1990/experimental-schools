@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { authService } from '@/lib/services/auth-service';
 import { passwordService } from '@/lib/services/password-service';
 import Image from 'next/image';
 
@@ -111,9 +112,15 @@ function ChangePasswordContent() {
       );
 
       setSuccess(true);
+      // Redirect to dashboard after a short success message (full load so auth runs with fresh session)
+      const dashboardPath =
+        (await authService.getCurrentUser())?.role === 'admin'
+          ? '/admin/dashboard'
+          : '/teacher/dashboard';
+      const redirectDelay = 800;
       setTimeout(() => {
-        router.push('/?passwordChanged=true');
-      }, 2000);
+        window.location.href = dashboardPath;
+      }, redirectDelay);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Password change failed';
       setError(errorMessage);

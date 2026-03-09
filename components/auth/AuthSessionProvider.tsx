@@ -1,6 +1,5 @@
 'use client';
 
-import { authService } from '@/lib/services/auth-service';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { supabase } from '@/lib/supabase/client';
 import { useEffect } from 'react';
@@ -37,29 +36,27 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
       });
     };
 
-    // Initialize session on mount with timeout protection
+    const SESSION_TIMEOUT_MS = 5000;
+    const FETCH_ME_TIMEOUT_MS = 6000;
+    const SAFETY_TIMEOUT_MS = 8000;
+
+    // Initialize session on mount with timeout protection so the app never hangs
     const initSession = async () => {
       try {
-        // Set loading to true at start (in case it was reset)
         setLoading(true);
-        
-        // Check for existing session with 10 second timeout
+
         const sessionPromise = supabase.auth.getSession();
-        const { data: { session } } = await withTimeout(sessionPromise, 10000);
+        const { data: { session } } = await withTimeout(sessionPromise, SESSION_TIMEOUT_MS);
 
         if (session && mounted) {
-          // Get user profile with 10 second timeout
-          const userPromise = authService.getCurrentUser();
-          const user = await withTimeout(userPromise, 10000);
-          
+          const user = await withTimeout(fetchMe(), FETCH_ME_TIMEOUT_MS);
+
           if (user && mounted) {
             setUser(user);
           } else if (mounted) {
-            // No user found, clear state
             setUser(null);
           }
         } else if (mounted) {
-          // No session, clear state
           setUser(null);
         }
       } catch (error) {
@@ -68,24 +65,35 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
           setUser(null);
         }
       } finally {
-        // Always set loading to false after initialization completes (or times out)
         if (mounted) {
           setLoading(false);
         }
       }
     };
 
+    const fetchMe = async (): Promise<ReturnType<typeof useAuthStore.getState>['user']> => {
+      const res = await fetch('/api/auth/me', { credentials: 'include' });
+      const data = await res.json();
+      if (!data?.user) return null;
+      const u = data.user;
+      return {
+        id: u.id,
+        email: u.email,
+        name: u.name,
+        role: u.role,
+        phone: u.phone,
+        isActive: u.isActive,
+        isClassTeacher: u.isClassTeacher ?? false,
+        isSubjectTeacher: u.isSubjectTeacher ?? false,
+        createdAt: u.createdAt ? new Date(u.createdAt) : new Date(),
+        updatedAt: u.updatedAt ? new Date(u.updatedAt) : new Date(),
+      };
+    };
+
     initSession();
 
-    // Helper to wrap getCurrentUser with timeout
-    const getCurrentUserWithTimeout = async (timeoutMs: number = 10000): Promise<any> => {
-      return Promise.race([
-        authService.getCurrentUser(),
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('getCurrentUser timeout')), timeoutMs);
-        }),
-      ]);
-    };
+    const getMeWithTimeout = async (timeoutMs: number = FETCH_ME_TIMEOUT_MS) =>
+      withTimeout(fetchMe(), timeoutMs);
 
     // Listen for auth state changes
     const {
@@ -94,51 +102,39 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
       if (!mounted) return;
 
       if (event === 'SIGNED_IN' && session) {
-        // Only fetch user if not already set (login() already sets it)
-        // This avoids duplicate API calls during login
-        // Check current user from store state
         const storeState = useAuthStore.getState();
         if (!storeState.user) {
           try {
-            const user = await getCurrentUserWithTimeout(10000);
-            if (user && mounted) {
-              setUser(user);
-            }
+            const user = await getMeWithTimeout(FETCH_ME_TIMEOUT_MS);
+            if (user && mounted) setUser(user);
           } catch (error) {
             console.error('Error fetching user in SIGNED_IN event:', error);
-            // Don't block - user might be set by login() already
           }
         }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setLoading(false);
       } else if (event === 'TOKEN_REFRESHED' && session) {
-        // Refresh user data when token is refreshed (background operation)
-        // Defer to avoid blocking UI
         setTimeout(async () => {
           if (mounted) {
             try {
-              const user = await getCurrentUserWithTimeout(10000);
-              if (user && mounted) {
-                setUser(user);
-              }
+              const user = await getMeWithTimeout(FETCH_ME_TIMEOUT_MS);
+              if (user && mounted) setUser(user);
             } catch (error) {
               console.error('Error refreshing user data:', error);
-              // Non-critical error - don't block UI
             }
           }
         }, 100);
       }
     });
 
-    // Safety timeout: Force loading to false after 15 seconds maximum
-    // This ensures the overlay never stays forever, even if something goes wrong
+    // Safety: guarantee loading is cleared so the app never hangs on splash/init
     const safetyTimeout = setTimeout(() => {
       if (mounted) {
-        console.warn('Auth initialization safety timeout: Forcing loading to false');
+        console.warn('Auth init safety timeout: clearing loading state');
         setLoading(false);
       }
-    }, 15000);
+    }, SAFETY_TIMEOUT_MS);
 
     return () => {
       mounted = false;

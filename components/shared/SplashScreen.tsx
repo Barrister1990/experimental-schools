@@ -3,40 +3,47 @@
 import { useEffect, useState } from 'react';
 import LoadingOverlay from './LoadingOverlay';
 
+const SPLASH_DURATION_MS = 1000;
+const SPLASH_MAX_MS = 1500; // Never show longer than this (safety)
+
 /**
  * Splash Screen Component
- * Shows a beautiful animated loading overlay for 1 second on initial app load
- * Perfect for PWA installations to provide a polished first impression
+ * Shows a loading overlay for up to 1s on first visit. Always hides by SPLASH_MAX_MS
+ * so the app never hangs on the splash after refresh or slow runtimes.
  */
 export default function SplashScreen() {
   const [show, setShow] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Mark as mounted
     setMounted(true);
 
-    // Check if this is the first visit (not a navigation)
-    const hasVisited = sessionStorage.getItem('app_visited');
-    
+    const hide = () => setShow(false);
+
+    let hasVisited = false;
+    try {
+      hasVisited = !!sessionStorage.getItem('app_visited');
+    } catch {
+      // sessionStorage unavailable (e.g. private mode)
+    }
+
     if (hasVisited) {
-      // User has visited before, don't show splash
-      setShow(false);
+      hide();
       return;
     }
 
-    // Mark as visited
-    sessionStorage.setItem('app_visited', 'true');
+    try {
+      sessionStorage.setItem('app_visited', 'true');
+    } catch {
+      // ignore
+    }
 
-        // Show splash for exactly 1 second
-        const splashDuration = 1000; // 1 second
-    
-    const timer = setTimeout(() => {
-      setShow(false);
-    }, splashDuration);
+    const timer = setTimeout(hide, SPLASH_DURATION_MS);
+    const safetyTimer = setTimeout(hide, SPLASH_MAX_MS);
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(safetyTimer);
     };
   }, []);
 
@@ -45,8 +52,8 @@ export default function SplashScreen() {
   }
 
   return (
-    <LoadingOverlay 
-      isLoading={show} 
+    <LoadingOverlay
+      isLoading={show}
       message="Welcome to Hohoe Experimental Schools"
       showLogo={true}
       delay={0}

@@ -11,6 +11,13 @@ import LoadingOverlay from './LoadingOverlay';
 export default function GlobalLoadingOverlay() {
   const { isLoading } = useAuthStore();
 
-  return <LoadingOverlay isLoading={isLoading} message="Initializing..." />;
+  return (
+    <LoadingOverlay
+      isLoading={isLoading}
+      message="Initializing..."
+      showLogo={true}
+      delay={0}
+    />
+  );
 }
 

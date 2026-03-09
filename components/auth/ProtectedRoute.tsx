@@ -59,14 +59,21 @@ export default function ProtectedRoute({
     }
   }, [isAuthenticated, user, isLoading, allowedRoles, redirectTo]);
 
-  // Show loading state
+  // Show loading state (never hang: AuthSessionProvider has a safety timeout)
   if (isLoading) {
-    return <LoadingOverlay isLoading={true} message="Verifying authentication..." />;
+    return <LoadingOverlay isLoading={true} message="Verifying authentication..." delay={0} />;
   }
 
-  // Show nothing while redirecting
+  // Show redirecting state instead of blank screen so the page never "hangs" with nothing
   if (!isAuthenticated || !user) {
-    return null;
+    return (
+      <LoadingOverlay
+        isLoading={true}
+        message="Redirecting to login..."
+        showLogo={false}
+        delay={0}
+      />
+    );
   }
 
   // Check role access - ensure user data is complete before checking
