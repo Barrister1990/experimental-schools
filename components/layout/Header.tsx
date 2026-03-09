@@ -31,14 +31,14 @@ export default function Header({ title }: HeaderProps) {
           <div className="relative w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 flex-shrink-0">
             <Image
               src="/logo.png"
-              alt="Hohoe E.P Basic A Logo"
+              alt="Hohoe Experimental Schools Logo"
               fill
               className="object-contain"
             />
           </div>
           <div className="hidden sm:block min-w-0 max-w-[120px] md:max-w-none">
             <h1 className="text-[10px] sm:text-xs md:text-base font-bold text-gray-900 leading-tight truncate">
-              HOHOE E.P BASIC A
+              HOHOE EXPERIMENTAL SCHOOLS
             </h1>
             <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-600 leading-tight truncate">School Management System</p>
           </div>

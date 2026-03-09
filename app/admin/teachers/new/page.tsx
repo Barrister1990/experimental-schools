@@ -76,9 +76,9 @@ export default function AddTeacherPage() {
       showSuccess(
         `Teacher account created successfully!\n\n` +
         `Email: ${result.user.email}\n` +
-        `The teacher will receive an email verification link and will need to set their password on first login.\n\n` +
-        `Temporary password: ${tempPassword}\n` +
-        `(Please share this securely with the teacher)`
+        `The teacher can log in immediately with the password below. They will be prompted to change it on first login.\n\n` +
+        `Password: ${tempPassword}\n` +
+        `(Share this securely with the teacher — no invite or email acceptance required)`
       );
       router.push('/admin/teachers');
     } catch (error: any) {
@@ -113,7 +113,7 @@ export default function AddTeacherPage() {
         {/* Info Banner */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 md:p-4">
           <p className="text-xs md:text-sm text-blue-800">
-            <strong>Note:</strong> Creating a teacher will create a user account. The teacher will receive an email verification link and will need to set their password on first login.
+            <strong>Note:</strong> Creating a teacher creates an account immediately. Share the generated password with the teacher so they can log in right away (no invite or email acceptance needed). They will be prompted to change their password on first login.
           </p>
         </div>
 

@@ -1,6 +1,6 @@
-# Hohoe E.P Basic A - School Management System Documentation
+# Hohoe Experimental Schools - School Management System Documentation
 
-Welcome to the comprehensive documentation for the Hohoe E.P Basic A School Management System. This documentation covers all aspects of the project from design to implementation.
+Welcome to the comprehensive documentation for the Hohoe Experimental Schools Management System. This documentation covers all aspects of the project from design to implementation.
 
 ## Documentation Index
 

@@ -30,7 +30,7 @@ export default function SettingsPage() {
   
   // School Information State
   const [schoolInfo, setSchoolInfo] = useState({
-    name: 'HOHOE E.P BASIC A',
+    name: 'HOHOE EXPERIMENTAL SCHOOLS',
     address: 'Hohoe, Volta Region, Ghana',
     phone: '+233 XX XXX XXXX',
     email: 'info@hohoebasica.edu.gh',

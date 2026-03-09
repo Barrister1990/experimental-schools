@@ -75,7 +75,7 @@ export default function LoadingOverlay({
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 animate-scale-bounce">
               <Image
                 src="/logo.png"
-                alt="Hohoe E.P Basic A Logo"
+                alt="Hohoe Experimental Schools Logo"
                 fill
                 className="object-contain drop-shadow-2xl"
                 priority
@@ -92,7 +92,7 @@ export default function LoadingOverlay({
         {/* School Name with Fade Animation */}
         <div className="text-center space-y-2 animate-fade-in-up">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-            HOHOE E.P BASIC A
+            HOHOE EXPERIMENTAL SCHOOLS
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-blue-100 font-medium">
             School Management System

@@ -18,8 +18,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hohoe E.P Basic A - School Management System",
-  description: "Modern school management system for Hohoe E.P Basic A",
+  title: "Hohoe Experimental Schools - School Management System",
+  description: "Modern school management system for Hohoe Experimental Schools",
   manifest: "/manifest.json",
   themeColor: "#2563EB",
   viewport: {

@@ -121,13 +121,13 @@ function AuthCallbackContent() {
           <div className="relative w-16 h-16">
             <Image
               src="/logo.png"
-              alt="Hohoe E.P Basic A Logo"
+              alt="Hohoe Experimental Schools Logo"
               fill
               className="object-contain"
             />
           </div>
         </div>
-        <h1 className="text-xl font-bold text-gray-900 mb-2">HOHOE E.P BASIC A</h1>
+        <h1 className="text-xl font-bold text-gray-900 mb-2">HOHOE EXPERIMENTAL SCHOOLS</h1>
         
         {status === 'processing' && (
           <div className="mt-8">
@@ -172,13 +172,13 @@ export default function AuthCallbackPage() {
             <div className="relative w-16 h-16">
               <Image
                 src="/logo.png"
-                alt="Hohoe E.P Basic A Logo"
+                alt="Hohoe Experimental Schools Logo"
                 fill
                 className="object-contain"
               />
             </div>
           </div>
-          <h1 className="text-xl font-bold text-gray-900 mb-2">HOHOE E.P BASIC A</h1>
+          <h1 className="text-xl font-bold text-gray-900 mb-2">HOHOE EXPERIMENTAL SCHOOLS</h1>
           <div className="mt-8">
             <div className="mx-auto w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
             <p className="mt-4 text-sm text-gray-600">Loading...</p>

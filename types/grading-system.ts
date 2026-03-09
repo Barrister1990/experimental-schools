@@ -33,7 +33,7 @@ export interface GradingSystem {
 export const DEFAULT_GRADING_SYSTEM: GradingSystem = {
   id: 'default',
   name: 'Universal Grading System',
-  description: 'Standard grading system for Hohoe E.P Basic A',
+  description: 'Standard grading system for Hohoe Experimental Schools',
   gradeLevels: [
     {
       id: 'hp',

@@ -238,7 +238,7 @@ const generateReportCardHTML = (
   if (classLevel === 'KG 1' || classLevel === 'KG 2') {
     return `
       <div class="report-card" style="page-break-after: always; margin-bottom: 20px;">
-        <h4 class="title">HOHOE E.P BASIC 'A' SCHOOL</h4>
+        <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
         <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
         <h5 class="title">TERMINAL REPORT</h5>
         <h5 class="title">KINDERGARTEN</h5>
@@ -346,7 +346,7 @@ const generateReportCardHTML = (
   } else if (classLevel === 'Basic 1' || classLevel === 'Basic 2' || classLevel === 'Basic 3') {
     return `
       <div class="report-card" style="page-break-after: always; margin-bottom: 20px;">
-        <h4 class="title">HOHOE E.P BASIC 'A' SCHOOL</h4>
+        <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
         <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
         <h5 class="title">TERMINAL REPORT</h5>
         <h5 class="title">LOWER PRIMARY</h5>
@@ -454,7 +454,7 @@ const generateReportCardHTML = (
   } else if (classLevel === 'Basic 4' || classLevel === 'Basic 5' || classLevel === 'Basic 6') {
     return `
       <div class="report-card" style="page-break-after: always; margin-bottom: 20px;">
-        <h4 class="title">HOHOE E.P BASIC 'A' SCHOOL</h4>
+        <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
         <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
         <h5 class="title">TERMINAL REPORT</h5>
         <h5 class="title">UPPER PRIMARY</h5>
@@ -565,7 +565,7 @@ const generateReportCardHTML = (
     
     return `
       <div class="report-card" style="page-break-after: always; margin-bottom: 20px;">
-        <h5 class="title">HOHOE E.P BASIC 'A' SCHOOL</h5>
+        <h5 class="title">HOHOE EXPERIMENTAL SCHOOLS</h5>
         <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
         <h6 class="title">TERMINAL REPORT</h6>
         <h6 class="title">JUNIOR HIGH SCHOOL</h6>

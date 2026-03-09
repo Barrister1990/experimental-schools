@@ -305,7 +305,7 @@ CREATE TRIGGER update_bece_results_updated_at BEFORE UPDATE ON public.bece_resul
 -- INSERT DEFAULT GRADING SYSTEM
 -- ============================================
 INSERT INTO public.grading_system (name, description, is_active)
-VALUES ('Ghanaian Basic School Grading System', 'Standard grading system for Hohoe E.P Basic A.', true)
+VALUES ('Ghanaian Basic School Grading System', 'Standard grading system for Hohoe Experimental Schools.', true)
 ON CONFLICT DO NOTHING;
 
 -- Insert default grade levels

@@ -187,7 +187,7 @@ BEGIN
   END LOOP;
   
   RAISE NOTICE '';
-  RAISE NOTICE 'Example: Student with 67.5% total should have grade AP';
+  RAISE NOTICE 'Example: Student with 67.5%% total should have grade AP';
   
   -- Find and display example of 67.5% grade
   SELECT 

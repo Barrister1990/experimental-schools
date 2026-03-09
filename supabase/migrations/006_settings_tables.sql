@@ -4,7 +4,7 @@
 -- ============================================
 CREATE TABLE IF NOT EXISTS public.school_settings (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL DEFAULT 'HOHOE E.P BASIC A',
+  name TEXT NOT NULL DEFAULT 'HOHOE EXPERIMENTAL SCHOOLS',
   address TEXT,
   phone TEXT,
   email TEXT,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS public.school_settings (
 
 -- Insert default school settings
 INSERT INTO public.school_settings (name, address, phone, email, website)
-VALUES ('HOHOE E.P BASIC A', 'Hohoe, Volta Region, Ghana', '+233 XX XXX XXXX', 'info@hohoebasica.edu.gh', 'www.hohoebasica.edu.gh')
+VALUES ('HOHOE EXPERIMENTAL SCHOOLS', 'Hohoe, Volta Region, Ghana', '+233 XX XXX XXXX', 'info@hohoebasica.edu.gh', 'www.hohoebasica.edu.gh')
 ON CONFLICT DO NOTHING;
 
 -- ============================================

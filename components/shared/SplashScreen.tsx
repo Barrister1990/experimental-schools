@@ -47,7 +47,7 @@ export default function SplashScreen() {
   return (
     <LoadingOverlay 
       isLoading={show} 
-      message="Welcome to Hohoe E.P Basic A"
+      message="Welcome to Hohoe Experimental Schools"
       showLogo={true}
       delay={0}
     />

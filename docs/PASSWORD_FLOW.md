@@ -1,6 +1,6 @@
 # Password Management Flow
 
-This document describes the complete password management flow for the Hohoe E.P Basic A School Management System, ready for Supabase integration.
+This document describes the complete password management flow for the Hohoe Experimental Schools Management System, ready for Supabase integration.
 
 ## Overview
 

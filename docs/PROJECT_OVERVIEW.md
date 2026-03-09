@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A modern, scalable School Management System designed specifically for **Hohoe E.P Basic A**, a Ghanaian government primary school. The system focuses on analytics, grading, assessment, classroom management, and subject assignment with a mobile-first Progressive Web App (PWA) approach.
+A modern, scalable School Management System designed specifically for **Hohoe Experimental Schools**. The system focuses on analytics, grading, assessment, classroom management, and subject assignment with a mobile-first Progressive Web App (PWA) approach.
 
 ## Core Objectives
 

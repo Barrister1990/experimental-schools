@@ -104,7 +104,7 @@ function HomeContent() {
               <div className="relative w-16 h-16 sm:w-20 sm:h-20">
             <Image
                   src="/logo.png"
-                  alt="Hohoe E.P Basic A Logo"
+                  alt="Hohoe Experimental Schools Logo"
                   fill
                   className="object-contain"
                   priority
@@ -112,7 +112,7 @@ function HomeContent() {
               </div>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-              HOHOE E.P BASIC A
+              HOHOE EXPERIMENTAL SCHOOLS
             </h1>
             <p className="text-xs sm:text-sm text-gray-600">
               School Management System
@@ -164,7 +164,7 @@ export default function Home() {
               <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                 <Image
                   src="/logo.png"
-                  alt="Hohoe E.P Basic A Logo"
+                  alt="Hohoe Experimental Schools Logo"
                   fill
                   className="object-contain"
                   priority
@@ -172,7 +172,7 @@ export default function Home() {
               </div>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-              HOHOE E.P BASIC A
+              HOHOE EXPERIMENTAL SCHOOLS
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 mb-4">
               School Management System

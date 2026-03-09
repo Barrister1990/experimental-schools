@@ -46,11 +46,11 @@ export async function POST(request: NextRequest) {
       ? 'class_teacher'
       : 'subject_teacher';
 
-    // Create user in Supabase Auth
+    // Create user in Supabase Auth (direct account — no invite flow)
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
-      email_confirm: false, // Require email verification
+      email_confirm: true, // Account ready to use; teacher can log in immediately with provided password
     });
 
     if (authError) {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
         is_subject_teacher: isSubjectTeacher || false,
         phone: phone || null,
         is_active: true,
-        email_verified: false,
+        email_verified: true, // Direct account — no invite; treat as verified
         password_change_required: true, // Require password change on first login
       })
       .select()
@@ -94,32 +94,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send verification email using inviteUserByEmail (sends email automatically)
-    // This will send a confirmation email with a link
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const { error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
-      email,
-      {
-        redirectTo: `${appUrl}/auth/callback`,
-        data: {
-          name,
-          role: primaryRole,
-        },
-      }
-    );
-
-    // If invite fails, try to send a confirmation email manually
-    if (inviteError) {
-      console.warn('Failed to send invite email, trying alternative method:', inviteError);
-      // Generate a confirmation link and send it via email template
-      const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
-        type: 'signup',
-        email,
-        password: password,
-      });
-      // Note: In production, you would send this link via your email service
-      // For now, the link is generated but email sending depends on Supabase email configuration
-    }
+    // No invite email: account is already created and confirmed. Teacher logs in with the password shared by admin.
 
     return NextResponse.json({
       success: true,

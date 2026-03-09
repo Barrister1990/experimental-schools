@@ -1,7 +1,7 @@
 {
   "name": "Hohoe LMS - School Management System",
   "short_name": "Hohoe LMS",
-  "description": "Modern school management system for Hohoe E.P Basic A",
+  "description": "Modern school management system for Hohoe Experimental Schools",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2563EB",

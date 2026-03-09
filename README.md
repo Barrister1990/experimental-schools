@@ -1,6 +1,6 @@
-# Hohoe E.P Basic A - School Management System
+# Hohoe Experimental Schools - School Management System
 
-A modern, scalable School Management System designed specifically for **Hohoe E.P Basic A**, a Ghanaian government primary school. Built as a mobile-first Progressive Web App (PWA) with offline capabilities, focusing on analytics, grading, assessment, and classroom management.
+A modern, scalable School Management System designed specifically for **Hohoe Experimental Schools**. Built as a mobile-first Progressive Web App (PWA) with offline capabilities, focusing on analytics, grading, assessment, and classroom management.
 
 ## 🚀 Features
 
@@ -136,4 +136,4 @@ This is a private project. For questions or issues, please contact the project m
 
 ---
 
-**Built with ❤️ for Hohoe E.P Basic A**
+**Built with ❤️ for Hohoe Experimental Schools**

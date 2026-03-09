@@ -280,13 +280,13 @@ function ResetPasswordContent() {
             <div className="relative w-16 h-16 md:w-20 md:h-20">
               <Image
                 src="/logo.png"
-                alt="Hohoe E.P Basic A Logo"
+                alt="Hohoe Experimental Schools Logo"
                 fill
                 className="object-contain"
               />
             </div>
           </div>
-          <h1 className="text-lg md:text-xl font-bold text-gray-900">HOHOE E.P BASIC A</h1>
+          <h1 className="text-lg md:text-xl font-bold text-gray-900">HOHOE EXPERIMENTAL SCHOOLS</h1>
           <p className="text-xs md:text-sm text-gray-600 mt-1">School Management System</p>
         </div>
 
@@ -488,13 +488,13 @@ export default function ResetPasswordPage() {
             <div className="relative w-16 h-16 md:w-20 md:h-20">
               <Image
                 src="/logo.png"
-                alt="Hohoe E.P Basic A Logo"
+                alt="Hohoe Experimental Schools Logo"
                 fill
                 className="object-contain"
               />
             </div>
           </div>
-          <h1 className="text-lg md:text-xl font-bold text-gray-900">HOHOE E.P BASIC A</h1>
+          <h1 className="text-lg md:text-xl font-bold text-gray-900">HOHOE EXPERIMENTAL SCHOOLS</h1>
           <p className="text-xs md:text-sm text-gray-600 mt-1">School Management System</p>
           <div className="mt-8">
             <div className="mx-auto w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>

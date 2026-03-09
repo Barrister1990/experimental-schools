@@ -1,6 +1,6 @@
 # Test Credentials
 
-This document contains test credentials for the Hohoe E.P Basic A School Management System.
+This document contains test credentials for the Hohoe Experimental Schools Management System.
 
 ## Available Test Accounts
 
