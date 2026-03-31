@@ -267,7 +267,7 @@ const PrintReportCard: React.FC<PrintReportCardProps> = ({
         <body>
           <div class="container">
             <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
-            <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
+            <p class="title">P.O.BOX 312, HOHOE MUNICIPAL</p>
             <h5 class="title">TERMINAL REPORT</h5>
             <h5 class="title">KINDERGARTEN</h5>
             <img src="${logoPath}" alt="logo" />
@@ -399,7 +399,7 @@ const PrintReportCard: React.FC<PrintReportCardProps> = ({
         <body>
           <div class="container">
             <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
-            <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
+            <p class="title">P.O.BOX 312, HOHOE MUNICIPAL</p>
             <h5 class="title">TERMINAL REPORT</h5>
             <h5 class="title">LOWER PRIMARY</h5>
             <img src="${logoPath}" alt="logo" />
@@ -531,7 +531,7 @@ const PrintReportCard: React.FC<PrintReportCardProps> = ({
         <body>
           <div class="container">
             <h4 class="title">HOHOE EXPERIMENTAL SCHOOLS</h4>
-            <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
+            <p class="title">P.O.BOX 312, HOHOE MUNICIPAL</p>
             <h5 class="title">TERMINAL REPORT</h5>
             <h5 class="title">UPPER PRIMARY</h5>
             <img src="${logoPath}" alt="logo" />
@@ -667,7 +667,7 @@ const PrintReportCard: React.FC<PrintReportCardProps> = ({
         <body>
           <div class="container">
             <h5 class="title">HOHOE EXPERIMENTAL SCHOOLS</h5>
-            <p class="title">P.O.BOX 2, HOHOE MUNICIPAL</p>
+            <p class="title">P.O.BOX 312, HOHOE MUNICIPAL</p>
             <h6 class="title">TERMINAL REPORT</h6>
             <h6 class="title">JUNIOR HIGH SCHOOL</h6>
             <img src="${logoPath}" alt="logo" />
