@@ -204,7 +204,7 @@ const PrintClassRanking: React.FC<PrintClassRankingProps> = ({
           <div class="header">
             <img src="${logoPath}" alt="School Logo" />
             <div class="school-name">HOHOE EXPERIMENTAL SCHOOLS</div>
-            <div class="school-address">P.O.BOX 312, HOHOE MUNICIPAL</div>
+            <div class="school-address">P.O.BOX 313, HOHOE MUNICIPAL</div>
             <div class="report-title">CLASS RANKING REPORT</div>
           </div>
 
